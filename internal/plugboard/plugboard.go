@@ -10,8 +10,8 @@ var (
 )
 
 type Connection struct {
-	A rune
-	B rune
+	A rune `json:"a"`
+	B rune `json:"b"`
 }
 
 type Plugboard struct {

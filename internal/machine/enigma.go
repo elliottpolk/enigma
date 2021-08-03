@@ -1,9 +1,9 @@
-package enigma
+package machine
 
 import (
-	"github.com/elliottpolk/enigma/plugboard"
-	"github.com/elliottpolk/enigma/reflector"
-	"github.com/elliottpolk/enigma/rotor"
+	"github.com/elliottpolk/enigma/internal/plugboard"
+	"github.com/elliottpolk/enigma/internal/reflector"
+	"github.com/elliottpolk/enigma/internal/rotor"
 )
 
 type Machine struct {

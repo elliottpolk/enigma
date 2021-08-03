@@ -1,6 +1,6 @@
 package reflector
 
-import "github.com/elliottpolk/enigma/wiring"
+import "github.com/elliottpolk/enigma/internal/wiring"
 
 type Reflector struct {
 	forward wiring.Wiring

@@ -3,7 +3,7 @@ package rotor
 import (
 	"strings"
 
-	"github.com/elliottpolk/enigma/wiring"
+	"github.com/elliottpolk/enigma/internal/wiring"
 )
 
 const limit int = 26

@@ -1,12 +1,12 @@
-package enigma
+package machine
 
 import (
 	"math/rand"
 	"testing"
 
-	"github.com/elliottpolk/enigma/plugboard"
-	"github.com/elliottpolk/enigma/reflector"
-	"github.com/elliottpolk/enigma/rotor"
+	"github.com/elliottpolk/enigma/internal/plugboard"
+	"github.com/elliottpolk/enigma/internal/reflector"
+	"github.com/elliottpolk/enigma/internal/rotor"
 
 	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/require"
@@ -15,30 +15,6 @@ import (
 func init() {
 	log.SetLevel(log.DebugLevel)
 }
-
-/*
-func TestEnigma(t *testing.T) {
-	pb, err := plugboard.NewPlugboard([]*plugboard.Connection{
-		{A: 'A', B: 'D'},
-		{A: 'F', B: 'T'},
-		{A: 'W', B: 'H'},
-		{A: 'J', B: 'O'},
-		{A: 'P', B: 'N'},
-	})
-	require.NoError(t, err)
-
-	m := &Machine{
-		left:   rotor.Create("VII", 10, 1),
-		middle: rotor.Create("V", 5, 2),
-		right:  rotor.Create("IV", 12, 3),
-		r:      reflector.Create("B"),
-		p:      pb,
-	}
-
-	//require.Equal(t, "UJFZBOKXBAQSGCLDNUTSNTASEF", m.Encrypt("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
-	require.Equal(t, "U", m.Encrypt("A"))
-}
-*/
 
 type param struct {
 	conns []*plugboard.Connection

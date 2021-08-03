@@ -1,0 +1,28 @@
+---
+machine:
+  rotors:
+    left:
+      name: 'VII'
+      pos: 10
+      notch: 1
+    middle:
+      name: 'V'
+      pos: 5
+      notch: 2
+    right:
+      name: 'IV'
+      pos: 12
+      notch: 3
+  reflector: 'B'
+  plugboard:
+    - 'AG'
+    - 'HR'
+    - 'YT'
+    - 'KI'
+    - 'FL'
+    - 'WE'
+    - 'NM'
+    - 'SD'
+    - 'OP'
+    - 'QJ'
+
