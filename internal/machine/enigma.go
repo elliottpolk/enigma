@@ -56,10 +56,11 @@ func (m *Machine) Encrypt(input string) string {
 	)
 
 	for i, c := range in {
-		if int(c) == 32 {
-			buf[i] = c
-		} else {
+		_in := int(c) - 65
+		if _in >= 0 && _in < 26 {
 			buf[i] = rune(m.encrypt(int(c)-65) + 65)
+		} else {
+			buf[i] = c
 		}
 	}
 

@@ -26,12 +26,10 @@ type config struct {
 
 type Enigma struct {
 	*machine.Machine
-
-	// state file
-	f string
 }
 
-func NewMachine(c, s []byte, sf string) (*Enigma, error) {
+//func NewMachine(c, s []byte, sf string) (*Enigma, error) {
+func NewMachine(c []byte) (*Enigma, error) {
 	var in map[string]*config
 	if err := yaml.Unmarshal(c, &in); err != nil {
 		return nil, errors.Wrap(err, "unable to parse config file")
@@ -85,6 +83,5 @@ func NewMachine(c, s []byte, sf string) (*Enigma, error) {
 			Reflector: reflector.Create(cfg.Reflector),
 			Plugboard: pb,
 		},
-		sf,
 	}, nil
 }

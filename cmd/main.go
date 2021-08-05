@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"os/signal"
 	"strconv"
 	"strings"
 	"time"
@@ -28,12 +27,6 @@ var (
 		Aliases: []string{"confg", "cfg", "c"},
 		Usage:   "path to config file",
 	})
-
-	stateFlag = altsrc.NewStringFlag(&cli.StringFlag{
-		Name:    "state",
-		Aliases: []string{"s"},
-		Usage:   "path to read/write a state file",
-	})
 )
 
 func main() {
@@ -49,7 +42,6 @@ func main() {
 		Compiled:  time.Unix(ct, -1),
 		Flags: []cli.Flag{
 			cfgFlag,
-			stateFlag,
 		},
 		Action: func(ctx *cli.Context) error {
 			cfg, err := ioutil.ReadFile(ctx.String(cfgFlag.Name))
@@ -61,35 +53,7 @@ func main() {
 				return cli.Exit("a valid config file must be provided", 1)
 			}
 
-			sf := ctx.String(stateFlag.Name)
-			if len(sf) < 1 {
-				return cli.Exit("a valid state file must be provided", 1)
-			}
-
-			state, err := ioutil.ReadFile(sf)
-			if err != nil {
-				return cli.Exit(errors.Wrap(err, "unable to read in state file"), 1)
-			}
-
-			// capture kill signal to write the state
-			c := make(chan os.Signal, 1)
-			signal.Notify(c, os.Interrupt)
-			go func() {
-				for sig := range c {
-					_ = sig
-					fmt.Println()
-					log.Info("capturing and writing current state...")
-
-					// TODO:
-					// - capture state
-					// - write to state file
-
-					log.Info("state written")
-					os.Exit(0)
-				}
-			}()
-
-			m, err := enigma.NewMachine(cfg, state, sf)
+			m, err := enigma.NewMachine(cfg)
 			if err != nil {
 				return cli.Exit(errors.Wrap(err, "unable to create new machine"), 1)
 			}
@@ -104,6 +68,7 @@ func main() {
 					continue
 				}
 
+				// remove all lead & trailing spaces and force to uppercase
 				in = strings.ToUpper(strings.TrimSpace(in))
 
 				fmt.Printf("> %s\n\n", m.Encrypt(in))
