@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/elliottpolk/enigma"
@@ -103,7 +104,9 @@ func main() {
 					continue
 				}
 
-				fmt.Println(m.Encrypt(in))
+				in = strings.ToUpper(strings.TrimSpace(in))
+
+				fmt.Printf("> %s\n\n", m.Encrypt(in))
 			}
 
 			return nil
