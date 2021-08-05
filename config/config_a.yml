@@ -4,15 +4,15 @@ machine:
     left:
       name: 'VII'
       pos: 10
-      notch: 1
+      ring: 1
     middle:
       name: 'V'
       pos: 5
-      notch: 2
+      ring: 2
     right:
       name: 'IV'
       pos: 12
-      notch: 3
+      ring: 3
   reflector: 'B'
   plugboard:
     - 'AG'

@@ -28,10 +28,10 @@ func TestEncrypt(t *testing.T) {
 		"basic": {
 			[]*plugboard.Connection{},
 			&Machine{
-				left:   rotor.Create("I", 0, 0),
-				middle: rotor.Create("II", 0, 0),
-				right:  rotor.Create("III", 0, 0),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("I", 0, 0),
+				Middle:    rotor.Create("II", 0, 0),
+				Right:     rotor.Create("III", 0, 0),
+				Reflector: reflector.Create("B"),
 			},
 			"ABCDEFGHIJKLMNOPQRSTUVWXYZAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			"BJELRQZVJWARXSNBXORSTNCFMEYHCXTGYJFLINHNXSHIUNTHEORXOPLOVFEKAGADSPNPCMHRVZCYECDAZIHVYGPITMSRZKGGHLSRBLHL",
@@ -39,10 +39,10 @@ func TestEncrypt(t *testing.T) {
 		"varied rotors": {
 			[]*plugboard.Connection{},
 			&Machine{
-				left:   rotor.Create("VII", 10, 1),
-				middle: rotor.Create("V", 5, 2),
-				right:  rotor.Create("IV", 12, 3),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("VII", 10, 1),
+				Middle:    rotor.Create("V", 5, 2),
+				Right:     rotor.Create("IV", 12, 3),
+				Reflector: reflector.Create("B"),
 			},
 			"ABCDEFGHIJKLMNOPQRSTUVWXYZAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			"FOTYBPKLBZQSGZBOPUFYPFUSETWKNQQHVNHLKJZZZKHUBEJLGVUNIOYSDTEZJQHHAOYYZSENTGXNJCHEDFHQUCGCGJBURNSEDZSEPLQP",
@@ -50,10 +50,10 @@ func TestEncrypt(t *testing.T) {
 		"long input": {
 			[]*plugboard.Connection{},
 			&Machine{
-				left:   rotor.Create("III", 3, 11),
-				middle: rotor.Create("VI", 5, 13),
-				right:  rotor.Create("VIII", 9, 19),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("III", 3, 11),
+				Middle:    rotor.Create("VI", 5, 13),
+				Right:     rotor.Create("VIII", 9, 19),
+				Reflector: reflector.Create("B"),
 			},
 			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 			"YJKJMFQKPCUOCKTEZQVXYZJWJFROVJMWJVXRCQYFCUVBRELVHRWGPYGCHVLBVJEVTTYVMWKJFOZHLJEXYXRDBEVEHVXKQSBPYZNIQDCBGTDDWZQWLHIBQNTYPIEBMNINNGMUPPGLSZCBRJULOLNJSOEDLOBXXGEVTKCOTTLDZPHBUFKLWSFSRKOMXKZELBDJNRUDUCOTNCGLIKVKMHHCYDEKFNOECFBWRIEFQQUFXKKGNTSTVHVITVHDFKIJIHOGMDSQUFMZCGGFZMJUKGDNDSNSJKWKENIRQKSUUHJYMIGWWNMIESFRCVIBFSOUCLBYEEHMESHSGFDESQZJLTORNFBIFUWIFJTOPVMFQCFCFPYZOJFQRFQZTTTOECTDOOYTGVKEWPSZGHCTQRPGZQOVTTOIEGGHEFDOVSUQLLGNOOWGLCLOWSISUGSVIHWCMSIUUSBWQIGWEWRKQFQQRZHMQJNKQTJFDIJYHDFCWTHXUOOCVRCVYOHLV",
@@ -65,7 +65,7 @@ func TestEncrypt(t *testing.T) {
 			pb, err := plugboard.NewPlugboard(p.conns)
 			require.NoError(t, err)
 
-			p.m.p = pb
+			p.m.Plugboard = pb
 
 			require.Equal(t, p.want, p.m.Encrypt(p.input))
 		})
@@ -106,21 +106,21 @@ func TestDecrypt(t *testing.T) {
 		}
 
 		m1 := &Machine{
-			left:   rotor.Create(r[0], sp[0], rs[0]),
-			middle: rotor.Create(r[1], sp[1], rs[1]),
-			right:  rotor.Create(r[2], sp[2], rs[2]),
-			r:      reflector.Create("B"),
-			p:      pb,
+			Left:      rotor.Create(r[0], sp[0], rs[0]),
+			Middle:    rotor.Create(r[1], sp[1], rs[1]),
+			Right:     rotor.Create(r[2], sp[2], rs[2]),
+			Reflector: reflector.Create("B"),
+			Plugboard: pb,
 		}
 
 		r1 := m1.Encrypt(string(input))
 
 		m2 := &Machine{
-			left:   rotor.Create(r[0], sp[0], rs[0]),
-			middle: rotor.Create(r[1], sp[1], rs[1]),
-			right:  rotor.Create(r[2], sp[2], rs[2]),
-			r:      reflector.Create("B"),
-			p:      pb,
+			Left:      rotor.Create(r[0], sp[0], rs[0]),
+			Middle:    rotor.Create(r[1], sp[1], rs[1]),
+			Right:     rotor.Create(r[2], sp[2], rs[2]),
+			Reflector: reflector.Create("B"),
+			Plugboard: pb,
 		}
 
 		r2 := m2.Encrypt(r1)
@@ -138,10 +138,10 @@ func TestPlugboard(t *testing.T) {
 				{A: 'L', B: 'W'},
 			},
 			&Machine{
-				left:   rotor.Create("I", 0, 0),
-				middle: rotor.Create("II", 0, 0),
-				right:  rotor.Create("III", 0, 0),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("I", 0, 0),
+				Middle:    rotor.Create("II", 0, 0),
+				Right:     rotor.Create("III", 0, 0),
+				Reflector: reflector.Create("B"),
 			},
 			"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
 			"QREBNMCYZELKQOJCGJVIVGLYEMUPCURPVPUMDIWXPPWROOQEGI",
@@ -156,10 +156,10 @@ func TestPlugboard(t *testing.T) {
 				{A: 'F', B: 'Q'},
 			},
 			&Machine{
-				left:   rotor.Create("IV", 0, 0),
-				middle: rotor.Create("VI", 10, 0),
-				right:  rotor.Create("III", 6, 0),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("IV", 0, 0),
+				Middle:    rotor.Create("VI", 10, 0),
+				Right:     rotor.Create("III", 6, 0),
+				Reflector: reflector.Create("B"),
 			},
 			"WRBHFRROSFHBCHVBENQFAGNYCGCRSTQYAJNROJAKVKXAHGUZHZVKWUTDGMBMSCYQSKABUGRVMIUOWAPKCMHYCRTSDEYTNJLVWNQY",
 			"FYTIDQIBHDONUPAUVPNKILDHDJGCWFVMJUFNJSFYZTSPITBURMCJEEAMZAZIJMZAVFCTYTKYORHYDDSXHBLQWPJBMSSWIPSWLENZ",
@@ -178,10 +178,10 @@ func TestPlugboard(t *testing.T) {
 				{A: 'Q', B: 'J'},
 			},
 			&Machine{
-				left:   rotor.Create("I", 0, 5),
-				middle: rotor.Create("II", 1, 5),
-				right:  rotor.Create("III", 20, 4),
-				r:      reflector.Create("B"),
+				Left:      rotor.Create("I", 0, 5),
+				Middle:    rotor.Create("II", 1, 5),
+				Right:     rotor.Create("III", 20, 4),
+				Reflector: reflector.Create("B"),
 			},
 			"RNXYAZUYTFNQFMBOLNYNYBUYPMWJUQSBYRHPOIRKQSIKBKEKEAJUNNVGUQDODVFQZHASHMQIHSQXICTSJNAUVZYIHVBBARPJADRH",
 			"CFBJTPYXROYGGVTGBUTEBURBXNUZGGRALBNXIQHVBFWPLZQSCEZWTAWCKKPRSWOGNYXLCOTQAWDRRKBCADTKZGPWSTNYIJGLVIUQ",
@@ -193,7 +193,7 @@ func TestPlugboard(t *testing.T) {
 			pb, err := plugboard.NewPlugboard(p.conns)
 			require.NoError(t, err)
 
-			p.m.p = pb
+			p.m.Plugboard = pb
 
 			require.Equal(t, p.want, p.m.Encrypt(p.input))
 		})

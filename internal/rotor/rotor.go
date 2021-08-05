@@ -9,79 +9,78 @@ import (
 const limit int = 26
 
 type Rotor struct {
-	Name string
-
-	forward  wiring.Wiring
-	backward wiring.Wiring
-
-	rpos int
-	npos int
-
-	ring int
+	Name  string      `json:"Name"`
+	Wires *wiring.Set `json:"wires"`
+	Pos   int         `json:"pos"`
+	Notch int         `json:"notch"`
+	Ring  int         `json:"ring"`
 }
 
-func Create(n string, rp, rs int) *Rotor {
-
+func Create(n string, p, r int) *Rotor {
 	var (
 		w string
 
-		npos int
-		name string = strings.ToUpper(n)
+		notch int
+		name  string = strings.ToUpper(n)
 	)
 
 	switch name {
 	case "I":
 		w = "EKMFLGDQVZNTOWYHXUSPAIBRCJ"
-		npos = 16
+		notch = 16
 
 	case "II":
 		w = "AJDKSIRUXBLHWTMCQGZNPYFVOE"
-		npos = 4
+		notch = 4
 
 	case "III":
 		w = "BDFHJLCPRTXVZNYEIWGAKMUSQO"
-		npos = 21
+		notch = 21
 
 	case "IV":
 		w = "ESOVPZJAYQUIRHXLNFTGKDCMWB"
-		npos = 9
+		notch = 9
 
 	case "V":
 		w = "VZBRGITYUPSDNHLXAWMJQOFECK"
-		npos = 25
+		notch = 25
 
 	case "VI":
 		w = "JPGVOUMFYQBENHZRDKASXLICTW"
-		npos = 0
+		notch = 0
 
 	case "VII":
 		w = "NZJHGRCXMYSWBOUFAIVLPEKQDT"
-		npos = 0
+		notch = 0
 
 	case "VIII":
 		w = "FKQHTLXOCBJSPDZRAMEWNIUYGV"
-		npos = 0
+		notch = 0
 
 	default:
 		fwd := wiring.Decode([]rune("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
 		return &Rotor{
-			Name:     "Identity",
-			forward:  fwd,
-			backward: wiring.Inverse(fwd),
-			rpos:     rp,
-			npos:     0,
-			ring:     rs,
+			Name: "Identity",
+			Wires: &wiring.Set{
+				Forward:  fwd,
+				Backward: wiring.Inverse(fwd),
+			},
+			Pos:   p,
+			Notch: 0,
+			Ring:  r,
 		}
 	}
 
 	fwd := wiring.Decode([]rune(w))
 	return &Rotor{
-		Name:     name,
-		forward:  fwd,
-		backward: wiring.Inverse(fwd),
-		rpos:     rp,
-		npos:     npos,
-		ring:     rs,
+		Name: name,
+		Wires: &wiring.Set{
+			Forward:  fwd,
+			Backward: wiring.Inverse(fwd),
+		},
+		Pos:   p,
+		Notch: notch,
+		Ring:  r,
 	}
 }
 
@@ -91,23 +90,23 @@ func encipher(k, pos, ring int, mapping []int) int {
 }
 
 func (r *Rotor) Forward(c int) int {
-	return encipher(c, r.rpos, r.ring, r.forward)
+	return encipher(c, r.Pos, r.Ring, r.Wires.Forward)
 }
 
 func (r *Rotor) Backward(c int) int {
-	return encipher(c, r.rpos, r.ring, r.backward)
+	return encipher(c, r.Pos, r.Ring, r.Wires.Backward)
 }
 
 func (r *Rotor) AtNotch() bool {
 	switch r.Name {
 	case "VI", "VII", "VIII":
-		return r.rpos == 12 || r.rpos == 25
+		return r.Pos == 12 || r.Pos == 25
 
 	default:
-		return r.npos == r.rpos
+		return r.Notch == r.Pos
 	}
 }
 
 func (r *Rotor) Turnover() {
-	r.rpos = (r.rpos + 1) % limit
+	r.Pos = (r.Pos + 1) % limit
 }
